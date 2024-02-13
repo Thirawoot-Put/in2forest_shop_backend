@@ -1,11 +1,162 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+enum ProductStatus {
+  ONSALE
+  SOLDOUT
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique @db.VarChar(40)
+  password  String    @db.VarChar(191)
+  firstName String    @map("first_name") @db.VarChar(40)
+  lastName  String?   @map("last_name") @db.VarChar(40)
+  role      Role
+  mobile    String?   @db.VarChar(40)
+  createdAt DateTime  @default(now()) @map("created_at")
+  address   Address[]
+  orders    Order[]
+  carts     Cart[]
+
+  @@map("users")
+}
+
+model Address {
+  id                Int      @id @default(autoincrement())
+  receiverFirstName String   @map("receiver_first_name") @db.VarChar(40)
+  receiverLastName  String?  @map("receiver_last_name") @db.VarChar(40)
+  addressDetail     String   @map("address_detail") @db.VarChar(255)
+  subdistrict       String   @db.VarChar(50)
+  district          String   @db.VarChar(50)
+  province          String   @db.VarChar(50)
+  zipCode           String   @map("zip_code") @db.VarChar(5)
+  receiverMobile    String   @map("receiver_mobile")
+  updatedAt         DateTime @default(now()) @updatedAt @map("updated_at")
+  userId            Int      @map("user_id")
+  user              User     @relation(fields: [userId], references: [id])
+  orders            Order[]
+
+  @@map("addresses")
+}
+
+model ProductType {
+  id       Int       @id @default(autoincrement())
+  type     String    @unique @db.VarChar(40)
+  products Product[]
+
+  @@map("product_type")
+}
+
+model Product {
+  id            Int            @id @default(autoincrement())
+  productName   String         @map("product_name") @db.VarChar(100)
+  productDetail String?        @map("product_detail") @db.VarChar(150)
+  size          String         @db.VarChar(100)
+  defect        String?        @db.VarChar(100)
+  price         Int            @db.UnsignedInt
+  status        ProductStatus  @default(ONSALE)
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime?      @updatedAt @map("updated_at")
+  productTypeId Int            @map("product_type_id")
+  productType   ProductType    @relation(fields: [productTypeId], references: [id])
+  productImages ProductImage[]
+  orderItems    OrderItem[]
+  carts         Cart[]
+
+  @@map("products")
+}
+
+model ProductImage {
+  id        Int     @id @default(autoincrement())
+  imageUrl  String  @map("image_url") @db.VarChar(255)
+  productId Int     @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@map("product_image")
+}
+
+model Cart {
+  id           Int     @id @default(autoincrement())
+  productName  String  @map("product_name") @db.VarChar(100)
+  productPrice Int     @map("product_price") @db.UnsignedInt
+  userId       Int     @map("user_id")
+  user         User    @relation(fields: [userId], references: [id])
+  productId    Int     @map("product_id")
+  product      Product @relation(fields: [productId], references: [id])
+
+  @@map("carts")
+}
+
+model Order {
+  id         Int         @id @default(autoincrement())
+  totalPrice Int         @map("total_price") @db.UnsignedInt
+  createdAt  DateTime    @default(now()) @map("created_at")
+  updatedAt  DateTime?   @updatedAt @map("updated_at")
+  userId     Int         @map("user_id")
+  users      User        @relation(fields: [userId], references: [id])
+  addressId  Int         @map("address_id")
+  address    Address     @relation(fields: [addressId], references: [id])
+  orderItems OrderItem[]
+  payment    Payment?
+  delivery   Delivery?
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id           Int     @id @default(autoincrement())
+  productName  String  @map("product_name") @db.VarChar(100)
+  productPrice Int     @map("product_price") @db.UnsignedInt
+  orderId      Int     @map("order_id")
+  order        Order   @relation(fields: [orderId], references: [id])
+  productId    Int     @map("product_id")
+  product      Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+model PaymentType {
+  id       Int       @id @default(autoincrement())
+  type     String?   @db.VarChar(40)
+  payments Payment[]
+
+  @@map("payment_types")
+}
+
+model Payment {
+  id             Int         @id @default(autoincrement())
+  paymentDetail  String      @map("payment_detail") @db.VarChar(100)
+  proofOfPayment String      @map("proof_of_payment") @db.VarChar(255)
+  createdAt      DateTime    @default(now()) @map("created_at")
+  updatedAt      DateTime?   @updatedAt @map("updated_at")
+  orderId        Int         @unique @map("order_id")
+  order          Order       @relation(fields: [orderId], references: [id])
+  paymentTypeId  Int         @map("payment_type_id")
+  paymentType    PaymentType @relation(fields: [paymentTypeId], references: [id])
+
+  @@map("payments")
+}
+
+model Delivery {
+  id                  Int       @id @default(autoincrement())
+  deliveryServiceName String    @map("delivery_service_name") @db.VarChar(40)
+  trackingNumber      String?   @map("tracking_number") @db.VarChar(40)
+  deliveryDetail      String?   @map("dele=ivery_detail") @db.VarChar(191)
+  deliveryAt          DateTime? @updatedAt @map("delivery_at")
+  orderId             Int       @unique @map("order_id")
+  order               Order     @relation(fields: [orderId], references: [id])
+
+  @@map("deliveries")
 }
