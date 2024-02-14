@@ -19,3 +19,29 @@
     500 {
             message     string      server error
         }
+
+/auth/me 
+    HEADER AUTHORIZATION "BEARER TOKEN"
+    RESPONSE json
+    200 {
+            user    object      user object without password
+        }
+
+/auth/login
+    REQUEST object
+    {   
+        email       string      user email address, 
+        password    string      user password contain only alphabeth
+    }
+    RESPONSE
+    200 {
+        accessToken     string      user Token
+        user            object      user object without password
+    }
+    400 {
+            message     string      client error
+            code        string      in use
+        }
+    500 {
+            message     string      server error
+        }

@@ -23,3 +23,20 @@ exports.register = catchError(async (req, res, next) => {
 
     res.status(201).json({ accessToken, newUser });
 });
+
+exports.login = catchError(async (req, res, next) => {
+    const existUser = await userService.findUserByEmail(req.body.email);
+    if (!existUser) {
+        creatError('Invalid email address or password', 400);
+    }
+    const matchUser = await hashService.compare(req.body.password, existUser.password);
+    if (!matchUser) {
+        creatError('Invalid email address or password', 400);
+    }
+    const payload = { userId: existUser.id, firstName: existUser.firstName, lastName: existUser.lastName };
+    const token = jwtService.sign(payload);
+    delete existUser.password;
+    res.status(200).json({ token, user: existUser });
+});
+
+exports.me = (req, res, next) => { res.status(200).json({ user: req.user }) };
