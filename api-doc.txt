@@ -1,0 +1,21 @@
+/auth/register
+    REQUEST object
+    {   
+        email       string      email address, 
+        password    string      password contain only alphabeth, 
+        firstName   string      user first name, 
+        lastName    string      user last name,
+        mobile      string      mobile number
+     }
+    RESPONSE json
+    201 {
+            accessToken     string      user Token
+            newUser         object      user object without password
+        }
+    400 {
+            message     string      client error
+            code        string      in use
+        }
+    500 {
+            message     string      server error
+        }

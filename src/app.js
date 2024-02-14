@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const notFound = require('./middlewares/not-fount');
 const error = require('./middlewares/error');
 const limiter = require('./middlewares/rate-limit');
+const authRoute = require('./routes/auth-route');
 
 const app = express();
 
@@ -15,7 +16,7 @@ app.use(limiter);
 app.use(morgan('dev'));
 // app.use('/public', express.static('public'));
 
-app.use('/', (req, res, next) => { res.json({ message: 'hello' }) })
+app.use('/auth', authRoute)
 
 app.use(notFound);
 app.use(error);
