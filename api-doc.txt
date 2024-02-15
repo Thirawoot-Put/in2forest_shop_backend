@@ -45,3 +45,26 @@
     500 {
             message     string      server error
         }
+
+/admin/product
+REQUEST object
+    {   
+        productName     string      product name
+        productDetail   string?     product detail
+        size            string?     product size
+        defect          string?     product defect
+        price           int unsign  product price
+        productTypeId   int         product type id     
+    }
+    RESPONSE
+    201 {
+        message         string      success
+        newProduct      object      new product object
+    }
+    400 {
+            message     string      client error
+            code        string      invalid required data
+        }
+    500 {
+            message     string      server error
+        }

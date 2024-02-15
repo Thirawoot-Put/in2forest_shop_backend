@@ -23,7 +23,8 @@ const registerSchema = Joi.object({
     mobile: Joi.string().pattern(/^[0-9]{10}$/).required().messages({
         'string.empty': 'Mobile number is required',
         'string.pattern.base': 'Mobile number must be 10 characters'
-    })
+    }),
+    role: Joi.string()
 });
 
 exports.validateRegister = validate(registerSchema);
