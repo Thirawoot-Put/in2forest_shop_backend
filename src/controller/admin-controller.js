@@ -1,10 +1,15 @@
 const catchError = require('../utils/catch-error');
 const creatError = require('../utils/create-error');
 const adminService = require('../services/admin-service');
+const uploadService = require('../services/upload-service');
 
 exports.addProduct = catchError(async (req, res, next) => {
-    const newProduct = await adminService.createProduct(req.body);
-    console.log(req.body)
+    const { price, productTypeId } = req.body
+    const changeTypeData = { ...req.body, price: +price, productTypeId: +productTypeId }
+    const newProduct = await adminService.createProduct(changeTypeData);
+    const data = {};
+    data.mainImage = await uploadService.upload(req.file.path)
+    const uploadMainImg = await adminService.uploadMainImage(data, newProduct.id)
     res.status(201).json({ newProduct });
 });
 
@@ -26,5 +31,10 @@ exports.removeProduct = catchError(async (req, res, next) => {
     }
     const deletedProduct = await adminService.deleteProductById(productId);
     res.status(200).json({ message: 'Delete success', deletedProduct })
+})
+
+exports.getAllProductTypes = catchError(async (req, res, next) => {
+    const allTypes = await adminService.getAllTypeProduct()
+    res.status(200).json({ allTypes })
 })
 

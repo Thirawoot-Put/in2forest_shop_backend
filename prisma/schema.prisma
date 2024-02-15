@@ -70,6 +70,7 @@ model Product {
   createdAt     DateTime       @default(now()) @map("created_at")
   updatedAt     DateTime?      @updatedAt @map("updated_at")
   productTypeId Int            @map("product_type_id")
+  mainImage     String?        @map("main_image") @db.VarChar(255)
   productType   ProductType    @relation(fields: [productTypeId], references: [id])
   productImages ProductImage[]
   orderItems    OrderItem[]
