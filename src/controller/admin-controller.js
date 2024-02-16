@@ -5,6 +5,7 @@ const creatError = require('../utils/create-error');
 const adminService = require('../services/admin-service');
 const uploadService = require('../services/upload-service');
 const updateController = require('../utils/update-controller');
+const userService = require('../services/user-service')
 
 exports.addProduct = async (req, res, next) => {
     try {
@@ -25,7 +26,7 @@ exports.addProduct = async (req, res, next) => {
 exports.editProduct = async (req, res, next) => {
     try {
         const productId = +req.params.productId
-        const product = await adminService.findProductById(productId);
+        const product = await userService.findProductById(productId);
         if (!product) {
             res.status(400).json({ message: "Product not found" })
         }
@@ -49,7 +50,7 @@ exports.editProduct = async (req, res, next) => {
 
 exports.removeProduct = catchError(async (req, res, next) => {
     const productId = +req.params.productId;
-    const product = await adminService.findProductById(productId);
+    const product = await userService.findProductById(productId);
     if (!product) {
         res.status(400).json({ message: "Product not found" })
     }
@@ -57,18 +58,3 @@ exports.removeProduct = catchError(async (req, res, next) => {
     res.status(200).json({ message: 'Delete success', deletedProduct })
 })
 
-exports.getAllProductTypes = catchError(async (req, res, next) => {
-    const allTypes = await adminService.getAllTypeProduct()
-    res.status(200).json({ allTypes })
-})
-
-exports.getAllProduct = catchError(async (req, res, next) => {
-    const allProduct = await adminService.getAllProduct()
-    res.status(200).json({ allProduct })
-})
-
-exports.getProductById = catchError(async (req, res, next) => {
-    const productId = +req.params.productId
-    const oldData = await adminService.findProductById(productId);
-    res.status(200).json({ oldData })
-})
