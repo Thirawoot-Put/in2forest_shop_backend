@@ -1,17 +1,26 @@
+const fs = require('fs/promises');
+
 const catchError = require('../utils/catch-error');
 const creatError = require('../utils/create-error');
 const adminService = require('../services/admin-service');
 const uploadService = require('../services/upload-service');
+const updateController = require('../utils/update-controller');
 
-exports.addProduct = catchError(async (req, res, next) => {
-    const { price, productTypeId } = req.body
-    const changeTypeData = { ...req.body, price: +price, productTypeId: +productTypeId }
-    const newProduct = await adminService.createProduct(changeTypeData);
-    const data = {};
-    data.mainImage = await uploadService.upload(req.file.path)
-    const uploadMainImg = await adminService.uploadMainImage(data, newProduct.id)
-    res.status(201).json({ newProduct });
-});
+exports.addProduct = async (req, res, next) => {
+    try {
+        const { price, productTypeId } = req.body
+        const changeTypeData = { ...req.body, price: +price, productTypeId: +productTypeId }
+        const newProduct = await adminService.createProduct(changeTypeData);
+        const data = {};
+        data.mainImage = await uploadService.upload(req.file.path)
+        updateController(adminService.uploadMainImage, data, newProduct.id)
+        res.status(201).json({ newProduct });
+    } catch (err) {
+        throw new Error(err.message);
+    } finally {
+        fs.unlink(req.file.path);
+    }
+};
 
 exports.editProduct = catchError(async (req, res, next) => {
     const productId = +req.params.productId
@@ -38,3 +47,7 @@ exports.getAllProductTypes = catchError(async (req, res, next) => {
     res.status(200).json({ allTypes })
 })
 
+exports.getAllProduct = catchError(async (req, res, next) => {
+    const allProduct = await adminService.getAllProduct()
+    res.status(200).json({ allProduct })
+})

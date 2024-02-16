@@ -1,4 +1,5 @@
 /auth/register
+    GET
     REQUEST object
     {   
         email       string      email address, 
@@ -21,6 +22,7 @@
         }
 
 /auth/me 
+    GET
     HEADER AUTHORIZATION "BEARER TOKEN"
     RESPONSE json
     200 {
@@ -28,6 +30,7 @@
         }
 
 /auth/login
+    POST
     REQUEST object
     {   
         email       string      user email address, 
@@ -47,7 +50,8 @@
         }
 
 /admin/product
-REQUEST object
+    POST
+    REQUEST object
     {   
         productName     string      product name
         productDetail   string?     product detail
@@ -67,4 +71,56 @@ REQUEST object
         }
     500 {
             message     string      server error
+        }
+/admin/product/:productId
+    PATCH
+    REQUEST object
+    {
+        updateData      object      update data object
+    }
+    RESPONSE
+    200 {
+        updatedObject   object      object after update
+    }
+    400 {
+            message     string      client error
+        }
+    500 {
+            message     string      server error
+        }
+/admin/product/:productId
+    DELETE
+    RESPONSE
+    200 {
+            message     string      delete success
+    }
+    400 {
+            message     string      client error
+        }
+    500 {
+            message     string      server error
+        }
+/admin/product/types
+    GET
+    RESPONSE
+    200 {
+            types       array of object      type and id
+    }
+    400 {
+            message     string      client error
+        }
+    500 {
+            message     string      server error
+        }
+/product
+    GET
+    RESPONSE
+    200 {
+            entireProduct    array of object     product data
+    }
+    400 {
+            message          string      client error
+        }
+    500 {
+            message          string      server error
         }
