@@ -8,7 +8,7 @@ const error = require('./middlewares/error');
 const limiter = require('./middlewares/rate-limit');
 const authRoute = require('./routes/auth-route');
 const adminRoute = require('./routes/admin-route');
-const userRoute = require('./routes/user-route')
+const productRoute = require('./routes/product-route')
 
 const app = express();
 
@@ -19,7 +19,7 @@ app.use(morgan('dev'));
 // app.use('/public', express.static('public'));
 
 app.use('/auth', authRoute);
-app.use('/user', userRoute)
+app.use('/products', productRoute)
 app.use('/admin', adminRoute);
 
 app.use(notFound);

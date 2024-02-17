@@ -5,7 +5,7 @@ const creatError = require('../utils/create-error');
 const adminService = require('../services/admin-service');
 const uploadService = require('../services/upload-service');
 const updateController = require('../utils/update-controller');
-const userService = require('../services/user-service')
+const productService = require('../services/product-service')
 
 exports.addProduct = async (req, res, next) => {
     try {
@@ -26,7 +26,7 @@ exports.addProduct = async (req, res, next) => {
 exports.editProduct = async (req, res, next) => {
     try {
         const productId = +req.params.productId
-        const product = await userService.findProductById(productId);
+        const product = await productService.findProductById(productId);
         if (!product) {
             res.status(400).json({ message: "Product not found" })
         }
@@ -50,7 +50,7 @@ exports.editProduct = async (req, res, next) => {
 
 exports.removeProduct = catchError(async (req, res, next) => {
     const productId = +req.params.productId;
-    const product = await userService.findProductById(productId);
+    const product = await productService.findProductById(productId);
     if (!product) {
         res.status(400).json({ message: "Product not found" })
     }

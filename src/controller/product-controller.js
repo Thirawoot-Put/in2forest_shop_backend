@@ -1,23 +1,23 @@
 const catchError = require("../utils/catch-error")
-const userService = require('../services/user-service')
+const productService = require('../services/product-service')
 
 exports.getAllProductTypes = catchError(async (req, res, next) => {
-    const allTypes = await userService.getAllTypeProduct()
+    const allTypes = await productService.getAllTypeProduct()
     res.status(200).json({ allTypes })
 })
 
 exports.getAllProduct = catchError(async (req, res, next) => {
-    const allProduct = await userService.getAllProduct()
+    const allProduct = await productService.getAllProduct()
     res.status(200).json({ allProduct })
 })
 
 exports.getProductById = catchError(async (req, res, next) => {
     const productId = +req.params.productId
-    const oldData = await userService.findProductById(productId);
-    res.status(200).json({ oldData })
+    const productById = await productService.findProductById(productId);
+    res.status(200).json({ productById })
 })
 
 exports.getAllTypeAndDetail = catchError(async (req, res, next) => {
-    const typesWithProducts = await userService.getAllTypeAndDetail()
+    const typesWithProducts = await productService.getAllTypeAndDetail()
     res.status(200).json({ typesWithProducts })
 })
