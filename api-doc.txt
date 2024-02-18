@@ -124,3 +124,52 @@
     500 {
             message          string      server error
         }
+
+/cart
+    POST
+    REQUEST
+    {
+        userId          int         user id, cart owner
+        productId       int         product id
+        productName     string      product name from product table
+        productPrice    int         product price from product table
+    }
+    RESPONSE 
+    201 
+    {
+        newInCart    object      new cart detail
+    }
+    400 {
+            message          string      client error
+        }
+    500 {
+            message          string      server error
+        }
+/cart
+    GET
+    RESPONSE
+    200
+    {
+        availProduct    object      object of available product in cart
+    }
+    400 {
+            message          string      client error
+        }
+    500 {
+            message          string      server error
+        }
+
+/cart/:cartId
+    DELETE
+    RESPONSE
+    200 
+    {
+        message: "Delete item success"
+        deleteItem      object      data of deleted item
+    }
+    400 {
+            message: "Item not found"
+        }
+    500 {
+            message          string      server error
+        }
