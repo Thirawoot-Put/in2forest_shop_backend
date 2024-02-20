@@ -212,3 +212,23 @@
     {
             message          string      server error
     }
+
+/order
+    POST
+    REQUEST
+    {
+        addressId       int         address receiver id
+    }
+    201
+    {
+        message         add order success
+        newAddress      object      object of new order
+    }
+    400 
+    {
+            message: "Item not found"
+    }
+    500 
+    {
+            message          string      server error
+    }

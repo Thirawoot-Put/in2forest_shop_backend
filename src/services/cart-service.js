@@ -7,3 +7,4 @@ exports.findAvailInUserCart = (productId, userId) =>
 exports.findAllInCart = (id) =>
   prisma.cart.findMany({ where: { userId: id }, include: { product: true } });
 exports.removeFromCart = (id) => prisma.cart.delete({ where: { id } });
+exports.findAllCart = (id) => prisma.cart.findMany({ where: { userId: id } });
