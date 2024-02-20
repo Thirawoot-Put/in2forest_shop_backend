@@ -183,3 +183,32 @@
         email       string  user updated email address
         mobile      string  user update mobile number
     }
+
+/user/address
+    POST
+    REQUEST
+    {
+        receiverFirstName   string      receiver first name
+        receiverLastName    string      receiver last name
+        addressDetail       string      receiver address detail
+        subdistrict         string      receiver subdistrict
+        district            string      receiver district
+        province            string      receiver province
+        zipCode             string      receiver zip code
+        mobile              string      mobile number
+        userId              int         user id
+    }
+    RESPONSE
+    201
+    {
+        message         add address success
+        newAddress      object      object of new address
+    }
+    400 
+    {
+            message: "Item not found"
+    }
+    500 
+    {
+            message          string      server error
+    }
