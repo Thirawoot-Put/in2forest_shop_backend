@@ -3,7 +3,7 @@
     REQUEST object
     {   
         email       string      email address, 
-        password    string      password contain only alphabeth, 
+        password    string      password contain only alphabet, 
         firstName   string      user first name, 
         lastName    string      user last name,
         mobile      string      mobile number
@@ -173,3 +173,13 @@
     500 {
             message          string      server error
         }
+
+/user
+    PATCH
+    REQUEST
+    {
+        firstName   string  user updated first name
+        lastName    string  user updated last name
+        email       string  user updated email address
+        mobile      string  user update mobile number
+    }

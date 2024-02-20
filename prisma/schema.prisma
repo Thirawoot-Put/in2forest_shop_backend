@@ -17,6 +17,13 @@ enum ProductStatus {
   SOLDOUT
 }
 
+enum Status {
+  PENDING
+  CONCEL
+  SHIPPED
+  COMPLETE
+}
+
 model User {
   id        Int       @id @default(autoincrement())
   email     String    @unique @db.VarChar(40)
@@ -105,6 +112,7 @@ model Order {
   totalPrice Int         @map("total_price") @db.UnsignedInt
   createdAt  DateTime    @default(now()) @map("created_at")
   updatedAt  DateTime?   @updatedAt @map("updated_at")
+  status     Status      @default(PENDING)
   userId     Int         @map("user_id")
   users      User        @relation(fields: [userId], references: [id])
   addressId  Int         @map("address_id")
@@ -138,13 +146,13 @@ model PaymentType {
 
 model Payment {
   id             Int         @id @default(autoincrement())
-  paymentDetail  String      @map("payment_detail") @db.VarChar(100)
-  proofOfPayment String      @map("proof_of_payment") @db.VarChar(255)
+  paymentDetail  String?     @map("payment_detail") @db.VarChar(100)
+  proofOfPayment String?     @map("proof_of_payment") @db.VarChar(255)
   createdAt      DateTime    @default(now()) @map("created_at")
   updatedAt      DateTime?   @updatedAt @map("updated_at")
   orderId        Int         @unique @map("order_id")
   order          Order       @relation(fields: [orderId], references: [id])
-  paymentTypeId  Int         @map("payment_type_id")
+  paymentTypeId  Int         @default(1) @map("payment_type_id")
   paymentType    PaymentType @relation(fields: [paymentTypeId], references: [id])
 
   @@map("payments")

@@ -10,6 +10,7 @@ const authRoute = require("./routes/auth-route");
 const adminRoute = require("./routes/admin-route");
 const productRoute = require("./routes/product-route");
 const cartRoute = require("./routes/cart-route");
+const userRoute = require("./routes/user-route");
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use("/auth", authRoute);
 app.use("/products", productRoute);
 app.use("/admin", adminRoute);
 app.use("/cart", cartRoute);
+app.use("/user", userRoute);
 
 app.use(notFound);
 app.use(error);
