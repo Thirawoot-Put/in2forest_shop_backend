@@ -10,7 +10,7 @@ router.get("/", authenticate, orderController.getAllUserOrders);
 router.get("/:orderId", authenticate, orderController.getUserOrderById);
 
 // Admin order route
-router.get("/admin", authenticate, adminController.fetchAllOrders);
-router.get("/admin/:orderId", authenticate, adminController.getOrderById);
+// router.get("/admin", authenticate, adminController.fetchAllOrders);
+// router.get("/admin/:orderId", authenticate, adminController.getOrderById);
 
 module.exports = router;
