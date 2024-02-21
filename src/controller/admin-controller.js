@@ -68,3 +68,10 @@ exports.removeProduct = catchError(async (req, res, next) => {
   const deletedProduct = await adminService.deleteProductById(productId);
   res.status(200).json({ message: "Delete success", deletedProduct });
 });
+
+// Admin order controller
+
+exports.fetchAllOrders = catchError(async (req, res, nex) => {
+  const orders = await adminService.findAllOrders();
+  res.status(200).json({ orders });
+});

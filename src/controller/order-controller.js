@@ -27,6 +27,5 @@ exports.addNewOrder = catchError(async (req, res, next) => {
     await orderService.soldOut(itemsArray[i].productId);
   }
   const deleteCart = await orderService.deleteCart(userId);
-  console.log("****delete cart****", deleteCart);
   res.status(201).json({ message: "Create new order success", newOrder });
 });

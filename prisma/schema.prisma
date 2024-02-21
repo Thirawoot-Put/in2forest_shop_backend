@@ -19,7 +19,7 @@ enum ProductStatus {
 
 enum Status {
   PENDING
-  CONCEL
+  CANCEL
   SHIPPED
   COMPLETE
 }
@@ -129,7 +129,7 @@ model OrderItem {
   productName  String  @map("product_name") @db.VarChar(100)
   productPrice Int     @map("product_price") @db.UnsignedInt
   orderId      Int     @map("order_id")
-  order        Order   @relation(fields: [orderId], references: [id])
+  order        Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   productId    Int     @map("product_id")
   product      Product @relation(fields: [productId], references: [id])
 
@@ -151,7 +151,7 @@ model Payment {
   createdAt      DateTime    @default(now()) @map("created_at")
   updatedAt      DateTime?   @updatedAt @map("updated_at")
   orderId        Int         @unique @map("order_id")
-  order          Order       @relation(fields: [orderId], references: [id])
+  order          Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
   paymentTypeId  Int         @default(1) @map("payment_type_id")
   paymentType    PaymentType @relation(fields: [paymentTypeId], references: [id])
 
@@ -165,7 +165,7 @@ model Delivery {
   deliveryDetail      String?   @map("dele=ivery_detail") @db.VarChar(191)
   deliveryAt          DateTime? @updatedAt @map("delivery_at")
   orderId             Int       @unique @map("order_id")
-  order               Order     @relation(fields: [orderId], references: [id])
+  order               Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
   @@map("deliveries")
 }

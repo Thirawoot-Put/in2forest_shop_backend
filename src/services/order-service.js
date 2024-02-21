@@ -9,6 +9,9 @@ exports.createOrder = (userId, addressId, totalPrice, itemsArray) => {
       orderItems: {
         create: itemsArray,
       },
+      payment: {
+        create: { paymentTypeId: 1 },
+      },
     },
   });
 };
