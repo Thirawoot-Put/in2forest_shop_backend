@@ -75,3 +75,14 @@ exports.fetchAllOrders = catchError(async (req, res, nex) => {
   const orders = await adminService.findAllOrders();
   res.status(200).json({ orders });
 });
+
+exports.getOrderById = catchError(async (req, res, next) => {
+  const orderId = +req.params.orderId;
+  const order = await adminService.findOrderById(orderId);
+  if (order) {
+    res.status(200).json({ order });
+  }
+  if (!order) {
+    createError("Order not found", 400);
+  }
+});

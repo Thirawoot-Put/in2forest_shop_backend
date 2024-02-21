@@ -11,3 +11,5 @@ exports.deleteProductById = (id) => prisma.product.delete({ where: { id } });
 
 exports.findAllOrders = () =>
   prisma.order.findMany({ include: { payment: true } });
+
+exports.findOrderById = (id) => prisma.order.findFirst({ where: { id } });

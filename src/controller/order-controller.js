@@ -34,3 +34,14 @@ exports.getAllUserOrders = catchError(async (req, res, next) => {
   const userOrders = await orderService.findAllUserOrders(req.user.id);
   res.status(200).json({ userOrders });
 });
+
+exports.getUserOrderById = catchError(async (req, res, next) => {
+  const orderId = +req.params.orderId;
+  const order = await orderService.findUserOrderDetail(orderId, req.user.id);
+  if (order) {
+    res.status(200).json({ order });
+  }
+  if (!order) {
+    createError("Order not found", 400);
+  }
+});

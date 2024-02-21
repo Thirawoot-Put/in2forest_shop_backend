@@ -23,3 +23,6 @@ exports.deleteCart = (id) => prisma.cart.deleteMany({ where: { userId: id } });
 
 exports.findAllUserOrders = (id) =>
   prisma.order.findMany({ where: { userId: id }, include: { payment: true } });
+
+exports.findUserOrderDetail = (orderId, userId) =>
+  prisma.order.findFirst({ where: { AND: [{ id: orderId }, { userId }] } });
