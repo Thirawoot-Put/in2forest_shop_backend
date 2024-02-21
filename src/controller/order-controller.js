@@ -29,3 +29,8 @@ exports.addNewOrder = catchError(async (req, res, next) => {
   const deleteCart = await orderService.deleteCart(userId);
   res.status(201).json({ message: "Create new order success", newOrder });
 });
+
+exports.getAllUserOrders = catchError(async (req, res, next) => {
+  const userOrders = await orderService.findAllUserOrders(req.user.id);
+  res.status(200).json({ userOrders });
+});

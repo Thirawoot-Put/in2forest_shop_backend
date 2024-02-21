@@ -20,3 +20,6 @@ exports.soldOut = (id) =>
   prisma.product.updateMany({ data: { status: "SOLDOUT" }, where: { id } });
 
 exports.deleteCart = (id) => prisma.cart.deleteMany({ where: { userId: id } });
+
+exports.findAllUserOrders = (id) =>
+  prisma.order.findMany({ where: { userId: id }, include: { payment: true } });

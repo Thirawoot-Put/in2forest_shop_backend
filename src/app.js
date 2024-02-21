@@ -26,7 +26,7 @@ app.use("/products", productRoute);
 app.use("/admin", adminRoute);
 app.use("/cart", cartRoute);
 app.use("/user", userRoute);
-app.use("/order", orderRoute);
+app.use("/orders", orderRoute);
 app.use("/payment", paymentRoute);
 
 app.use(notFound);
