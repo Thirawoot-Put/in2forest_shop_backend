@@ -3,6 +3,9 @@ const express = require("express");
 const adminController = require("../controller/admin-controller");
 const upload = require("../middlewares/upload");
 const authenticate = require("../middlewares/authenticate");
+const {
+  validateAdminRegister,
+} = require("../middlewares/validators/auth-validator");
 
 const router = express.Router();
 
@@ -23,5 +26,8 @@ router.patch(
   adminController.updateOrderStatus
 );
 router.delete("/orders/:orderId", authenticate, adminController.deleteOrder);
+
+// admin register
+router.post("/register", validateAdminRegister, adminController.registerAdmin);
 
 module.exports = router;

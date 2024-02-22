@@ -2,6 +2,8 @@ const fs = require("fs/promises");
 
 const catchError = require("../utils/catch-error");
 const adminService = require("../services/admin-service");
+const userService = require("../services/user-service");
+const hashService = require("../services/hash-service");
 const uploadService = require("../services/upload-service");
 const updateController = require("../utils/update-controller");
 const productService = require("../services/product-service");
@@ -19,7 +21,8 @@ exports.addProduct = async (req, res, next) => {
     const data = {};
     data.mainImage = await uploadService.upload(req.file.path);
     updateController(adminService.uploadMainImage, data, newProduct.id);
-    res.status(201).json({ newProduct });
+    const allProducts = await productService.getAllTypeAndDetail();
+    res.status(201).json({ newProduct, allProducts });
   } catch (err) {
     createError(err.message);
   } finally {
@@ -98,4 +101,29 @@ exports.deleteOrder = catchError(async (req, res, next) => {
   const orderId = +req.params.orderId;
   const deleteOrder = await adminService.deleteOrder(orderId);
   res.status(200).json({ deleteOrder });
+});
+
+// admin register
+exports.registerAdmin = catchError(async (req, res, next) => {
+  if (req.body.adminCode !== "ADMIN") {
+    createError("admin_code_not_correct", 400);
+  }
+  const newData = { ...req.body, role: "ADMIN" };
+  delete newData.adminCode;
+  const existUser = await userService.findUserByEmail(req.body.email);
+  if (existUser) {
+    createError("email_already_use", 400);
+  }
+  newData.password = await hashService.hash(req.body.password);
+  console.log(newData);
+  const newUser = await userService.createUser(newData);
+  // const payload = {
+  //   userId: newUser.id,
+  //   firstName: newUser.firstName,
+  //   lastName: newUser.lastName,
+  // };
+  // const accessToken = jwtService.sign(payload);
+  delete newUser.password;
+
+  res.status(201).json({ newUser });
 });

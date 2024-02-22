@@ -25,3 +25,5 @@ exports.updateOrderStatus = (id, data) =>
   prisma.order.update({ data, where: { id } });
 
 exports.deleteOrder = (id) => prisma.order.delete({ where: { id } });
+
+exports.createAdmin = (data) => prisma.user.create({ data });
