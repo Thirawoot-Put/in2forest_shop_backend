@@ -45,3 +45,14 @@ exports.getUserOrderById = catchError(async (req, res, next) => {
     createError("Order not found", 400);
   }
 });
+
+exports.userDeleteOrder = catchError(async (req, res, next) => {
+  const userId = req.user.id;
+  const orderId = +req.params.orderId;
+  const itemInOrder = await orderService.findUserOrderDetail(orderId, userId);
+  for (let i = 0; i < itemInOrder.orderItems.length; i++) {
+    await orderService.reOnSale(itemInOrder.orderItems[i].productId);
+  }
+  const deleteOrder = await orderService.deleteOrder(orderId);
+  res.status(200).json({ deleteOrder });
+});
