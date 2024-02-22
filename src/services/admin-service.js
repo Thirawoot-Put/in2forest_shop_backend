@@ -21,5 +21,7 @@ exports.findOrderById = (id) =>
     },
   });
 
-exports.approveOrder = (id) =>
-  prisma.order.update({ data: { status: "APPROVED" }, where: { id } });
+exports.updateOrderStatus = (id, data) =>
+  prisma.order.update({ data, where: { id } });
+
+exports.deleteOrder = (id) => prisma.order.delete({ where: { id } });

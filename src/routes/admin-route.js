@@ -20,7 +20,8 @@ router.get("/orders/:orderId", authenticate, adminController.getOrderById);
 router.patch(
   "/orders/:orderId",
   authenticate,
-  adminController.updateApproveOrder
+  adminController.updateOrderStatus
 );
+router.delete("/orders/:orderId", authenticate, adminController.deleteOrder);
 
 module.exports = router;

@@ -87,8 +87,15 @@ exports.getOrderById = catchError(async (req, res, next) => {
   }
 });
 
-exports.updateApproveOrder = catchError(async (req, res, next) => {
+exports.updateOrderStatus = catchError(async (req, res, next) => {
   const orderId = +req.params.orderId;
-  const approveOrder = await adminService.approveOrder(orderId);
-  res.status(200).json({ approveOrder });
+  console.log(req.body);
+  const updatedOrder = await adminService.updateOrderStatus(orderId, req.body);
+  res.status(200).json({ updatedOrder });
+});
+
+exports.deleteOrder = catchError(async (req, res, next) => {
+  const orderId = +req.params.orderId;
+  const deleteOrder = await adminService.deleteOrder(orderId);
+  res.status(200).json({ deleteOrder });
 });
