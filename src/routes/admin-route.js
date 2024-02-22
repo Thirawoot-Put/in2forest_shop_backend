@@ -17,5 +17,10 @@ router.delete("/product/:productId", adminController.removeProduct);
 // order
 router.get("/orders", authenticate, adminController.fetchAllOrders);
 router.get("/orders/:orderId", authenticate, adminController.getOrderById);
+router.patch(
+  "/orders/:orderId",
+  authenticate,
+  adminController.updateApproveOrder
+);
 
 module.exports = router;

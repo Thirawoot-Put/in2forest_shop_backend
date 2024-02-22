@@ -20,3 +20,6 @@ exports.findOrderById = (id) =>
       payment: { select: { proofOfPayment: true } },
     },
   });
+
+exports.approveOrder = (id) =>
+  prisma.order.update({ data: { status: "APPROVED" }, where: { id } });

@@ -86,3 +86,9 @@ exports.getOrderById = catchError(async (req, res, next) => {
     createError("Order not found", 400);
   }
 });
+
+exports.updateApproveOrder = catchError(async (req, res, next) => {
+  const orderId = +req.params.orderId;
+  const approveOrder = await adminService.approveOrder(orderId);
+  res.status(200).json({ approveOrder });
+});

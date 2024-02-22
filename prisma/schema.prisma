@@ -19,7 +19,8 @@ enum ProductStatus {
 
 enum Status {
   PENDING
-  CANCEL
+  CANCELED
+  APPROVED
   SHIPPED
   COMPLETE
 }
