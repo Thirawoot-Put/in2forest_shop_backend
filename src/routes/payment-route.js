@@ -9,6 +9,7 @@ const router = express.Router();
 router.patch(
   "/:orderId",
   upload.single("proofOfPayment"),
+  authenticate,
   paymentController.uploadPaySlip
 );
 

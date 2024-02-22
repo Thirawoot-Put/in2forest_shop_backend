@@ -2,6 +2,7 @@ const fs = require("fs/promises");
 
 const paymentService = require("../services/payment-service");
 const uploadService = require("../services/upload-service");
+const orderService = require("../services/order-service");
 const updateController = require("../utils/update-controller");
 
 exports.uploadPaySlip = async (req, res, next) => {
@@ -21,7 +22,10 @@ exports.uploadPaySlip = async (req, res, next) => {
       orderId,
       data
     );
-    res.status(200).json({ message: "Upload success", paymentUpdate });
+    const userOrders = await orderService.findAllUserOrders(req.user.id);
+    res
+      .status(200)
+      .json({ message: "Upload success", paymentUpdate, userOrders });
   } catch (error) {
     console.log(error);
   } finally {

@@ -1,6 +1,7 @@
 const catchError = require("../utils/catch-error");
 
 const orderService = require("../services/order-service");
+const productService = require("../services/product-service");
 const cartService = require("../services/cart-service");
 const createError = require("../utils/create-error");
 
@@ -27,7 +28,10 @@ exports.addNewOrder = catchError(async (req, res, next) => {
     await orderService.soldOut(itemsArray[i].productId);
   }
   const deleteCart = await orderService.deleteCart(userId);
-  res.status(201).json({ message: "Create new order success", newOrder });
+  const allProducts = await productService.getAllTypeAndDetail();
+  res
+    .status(201)
+    .json({ message: "Create new order success", newOrder, allProducts });
 });
 
 exports.getAllUserOrders = catchError(async (req, res, next) => {
@@ -54,5 +58,6 @@ exports.userDeleteOrder = catchError(async (req, res, next) => {
     await orderService.reOnSale(itemInOrder.orderItems[i].productId);
   }
   const deleteOrder = await orderService.deleteOrder(orderId);
-  res.status(200).json({ deleteOrder });
+  const allProducts = await productService.getAllTypeAndDetail();
+  res.status(200).json({ deleteOrder, allProducts });
 });
