@@ -108,7 +108,7 @@ exports.registerAdmin = catchError(async (req, res, next) => {
   if (req.body.adminCode !== "ADMIN") {
     createError("admin_code_not_correct", 400);
   }
-  const newData = { ...req.body, role: "ADMIN" };
+  const newData = { ...req.body, role: process.env.ADMIN_SECRET };
   delete newData.adminCode;
   const existUser = await userService.findUserByEmail(req.body.email);
   if (existUser) {
