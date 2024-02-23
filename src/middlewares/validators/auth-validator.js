@@ -90,3 +90,16 @@ const adminRegisterSchema = Joi.object({
 });
 
 exports.validateAdminRegister = validate(adminRegisterSchema);
+
+const addAddressSchema = Joi.object({
+  receiverFirstName: Joi.string().required(),
+  receiverLastName: Joi.string().required(),
+  addressDetail: Joi.string().required(),
+  subdistrict: Joi.string().trim().required(),
+  district: Joi.string().trim().required(),
+  province: Joi.string().required(),
+  zipCode: Joi.string().required(),
+  receiverMobile: Joi.string().required(),
+});
+
+exports.validateAddAddress = validate(addAddressSchema);
